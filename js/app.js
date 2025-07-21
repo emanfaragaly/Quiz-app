@@ -16,7 +16,11 @@ let questions = [
   },
   {
     question: "Which one is a correct arrow function?",
-    options: ["( ) => { return 5 }", "( ) -> { return 5 }", "function =>( ) { }"],
+    options: [
+      "( ) => { return 5 }",
+      "( ) -> { return 5 }",
+      "function =>( ) { }",
+    ],
     answer: "( ) => { return 5 }",
   },
   {
@@ -48,42 +52,36 @@ let questions = [
   },
 ];
 
-window.addEventListener("load", () => {
+function displayQuestion() {
   ques.textContent = questions[i].question;
   for (let x = 0; x < questions[i].options.length; x++) {
     ans[x].textContent = questions[i].options[x];
+    option[x].checked = false;
+    ans[x].style.cssText = "background: white; color:black;";
   }
+}
+window.addEventListener("load", displayQuestion());
 
-  next.addEventListener("click", () => {
+next.addEventListener("click", () => {
+  if (i < questions.length - 1) {
     i++;
-    ques.textContent = questions[i].question;
-    for (let x = 0; x < questions[i].options.length; x++) {
-      ans[x].textContent = questions[i].options[x];
-      option[x].checked = false;
-      ans[x].style.cssText = "background: white; color:black;";
-      console.log(questions[i].question);
-    }
-  });
-  pre.addEventListener("click", () => {
-    i--;
-    ques.textContent = questions[i].question;
-    for (let x = 0; x < questions[i].options.length; x++) {
-      ans[x].textContent = questions[i].options[x];
-      option[x].checked = false;
-      ans[x].style.cssText = "background: white; color:black;";
-      console.log(questions[i].question);
-    }
-  });
-
-  for (let e = 0; e < option.length; e++) {
-    option[e].addEventListener("change", () => {
-      if (option[e].checked && ans[e].textContent === questions[i].answer) {
-        ans[e].style.cssText = "background: green; color:white;";
-        score.textContent = `Total Result = ${++y}/${questions.length}`;
-        i++;
-      } else {
-        ans[e].style.cssText = "background: red; color:white;";
-      }
-    });
+    displayQuestion();
   }
 });
+pre.addEventListener("click", () => {
+  if (i > 0) {
+    i--;
+    displayQuestion();
+  }
+});
+
+for (let e = 0; e < option.length; e++) {
+  option[e].addEventListener("change", () => {
+    if (option[e].checked && ans[e].textContent === questions[i].answer) {
+      ans[e].style.cssText = "background: green; color:white;";
+      score.textContent = `Total Result = ${++y}/${questions.length}`;
+    } else {
+      ans[e].style.cssText = "background: red; color:white;";
+    }
+  });
+}
